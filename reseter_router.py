@@ -1,4 +1,4 @@
-# -*- coding: utf-8
+l# -*- coding: utf-8
 import os
 from pyA20.gpio import gpio
 from pyA20.gpio import port
@@ -50,5 +50,3 @@ a=int(1)
 while a < 10 :
     router.sprawdz_lacze()
     sleep(10)
-
-print("uczymy się gita 1.0")
