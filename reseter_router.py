@@ -4,7 +4,7 @@ from pyA20.gpio import gpio
 from pyA20.gpio import port
 from time import sleep
 
-#definiuje klase lacze
+#define class lacze
 class router():
     def start(self):
         gpio.setcfg(port.PG7, gpio.OUTPUT)
@@ -17,36 +17,38 @@ class router():
         
 
     def sprawdz_lacze(self):
-#przypisuje serwery do slownika
+#add server adress to dictionary
         serwery = ['google.pl', 'wp.pl', 'onet.pl', 'amazon.com', 'ebay.com', 'ovh.org', '8.8.8.8', 'orange.pl', 'play.pl', 'upc.pl']
-        #serwery = 192.168.0.10
         i = 0
         connect = 0
-#zaczynam sprawdzać czy jest polaczenie z internetem
+#im start check internet connection
         while i < 10:
             hostname = serwery[i]
+#check via ping
             response = os.system("ping -c 1 " + hostname)
+#here i check temperautre processor
             temperature = str(os.popen("cat /sys/devices/virtual/thermal/thermal_zone1/temp").read())
             if response == 0:
                 print("Internety działają!")
+#here i will shutdown system if temperature of processor is to high
 		print("Temperatura procesora:" +temperature)
                 if int(temperature) > 80 :
                     os.system('shutdown -h now')
                 connect = 1
                 break
-#9 ptla oznacza brak poczenia wic resetujemy routery
+#9 loop mean problem with connect to internet and i restart router
             elif i == 9:
                 print('Brak połączenia')
                 router.restart()
                 break
             i = i+1
 
-#uruchamiam router
+#im starting router
 gpio.init()
 router = router()
 router.start()
 a=int(1)
-#sprawdzamy cze co 4 minuty
+#im checking connection every 4 minutes
 while a < 10 :
     router.sprawdz_lacze()
     sleep(10)
